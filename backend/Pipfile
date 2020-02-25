@@ -7,6 +7,10 @@ verify_ssl = true
 
 [packages]
 django = "*"
+django-rest-framework = "*"
+djangorestframework = "*"
+django-cors-headers = "*"
+httpie = "*"
 
 [requires]
 python_version = "3.7"
