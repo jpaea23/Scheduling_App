@@ -2,7 +2,6 @@ import React from 'react';
 import axios from "axios";
 
 import AuthLogin from '../../components/AuthenticationComp/AuthLogin/AuthLogin';
-import AuthLogout from '../../components/AuthenticationComp/AuthLogout/AuthLogout';
 import Spinner from '../../components/UI/SpinnerComp/SpinnerComp';
 import Modal from '../../components/UI/Modal/Modal';
 
@@ -61,10 +60,6 @@ class Authentication extends React.Component{
         this.setState({ credentials: usernameObj});
       }
 
-      logoutHandler = () =>{
-        console.log('logging user out');
-      }
-
     render(){
         let loginComp = (this.state.loading) ? <Spinner spinSize={15}/> : (
           <div>
@@ -73,9 +68,9 @@ class Authentication extends React.Component{
                     passwordChange={this.onPasswordChangeHandler}
                     error={this.state.error}
                     />
-            <AuthLogout logout={this.logoutHandler}/>
           </div>
         );
+        
         return(
             <div>
               <Modal show={this.state.loginRequired}>

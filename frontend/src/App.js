@@ -1,12 +1,17 @@
 import React from 'react';
+
+import Layout from './hoc/Layout/Layout';
+
 import Authentication from './containers/Authentication/Authentication';
+import Scheduler from './containers/Scheduler/Scheduler'
 
 class App extends React.Component {
   render(){
     return (
-      <div>
-        <Authentication/>
-      </div>
+      <Layout>
+         <Scheduler/>
+         <Authentication/>
+      </Layout>
     );
   }
 }
