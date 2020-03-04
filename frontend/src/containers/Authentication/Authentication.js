@@ -1,91 +1,54 @@
-import React from 'react';
-import axios from "axios";
+import React, { Component } from "react";
 
-import AuthLogin from '../../components/AuthenticationComp/AuthLogin/AuthLogin';
-import Spinner from '../../components/UI/SpinnerComp/SpinnerComp';
-import Modal from '../../components/UI/Modal/Modal';
+import axios from 'axios';
 
-class Authentication extends React.Component{
-    state = {
-      credentials:{
-        username: '',
-        password: ''
-      },
-      isAuthenticated: false,
-      loginRequired: true,
-      error: null,
-      loading: false,
-      user: null,
-      token: null
-    }
-    
-      loginHandler = event => {
-        //loading spin
-        this.setState({loading:true});
+import Aux from '../../hoc/Aux/Aux';  
+import Job from '../../components/SchedCalendar/Job/Job'  
 
-        //Credentials Object 
-        const credObj = {
-          username: this.state.credentials.username,
-          password: this.state.credentials.password
+class Scheduler extends Component{
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            job: [],
+            error: false,
+            isAuthenticated: true,
+            loading: false
         }
-        
-        axios
-              .post("http://127.0.0.1:8000/api/login/", credObj)
-              .then(res => {
+
+        if(this.state.isAuthenticated){
+            axios.get("http://127.0.0.1:8000/job/")
+            .then(res => {
                 console.log(res.data)
-                this.setState({isAuthenticated: true,
-                  loading: false,
-                  loginRequired: false,
-                  error: null,
-                  user: res.data.user,
-                  token: res.data.token
-                });
-                console.log(this.state.token)
-                console.log(this.state.user.username)
-                
-              })
-              .catch(err => {
-                this.setState({error: err, loading: false});
-                console.log("Error here " + this.state.error)
-              });
-        event.preventDefault();
-      };
-    
-      onUsernameChangeHandler = event => {
-        const usernameObj = {
-          username: event.target.value,
-          password: this.state.credentials.password
+                this.setState({
+                    job: res.data
+                })
+            })
+            .catch(err => {
+                console.log(err.message)
+            })
         }
-        this.setState({ credentials: usernameObj});
-      }
 
-      onPasswordChangeHandler = event => {
-        const usernameObj = {
-          password: event.target.value,
-          username: this.state.credentials.username
-        }
-        this.setState({ credentials: usernameObj});
-      }
+    }
 
     render(){
-        let loginComp = (this.state.loading) ? <Spinner spinSize={15}/> : (
-          <div>
-            <AuthLogin loginSubmit={this.loginHandler} 
-                    usernameChange={this.onUsernameChangeHandler}
-                    passwordChange={this.onPasswordChangeHandler}
-                    error={this.state.error}
-                    />
-          </div>
-        );
+
+        let resData = <p style={{textAlign:'center'}}><strong>Oh No! </strong> Something went Wrong...</p>
         
+        if(!this.state.error){
+            resData = this.state.job.map( jobKey => {
+                return <Job key={jobKey.jobId} 
+                client={jobKey.client} 
+                jobDate={jobKey.job_date} />
+            });
+        }
+
         return(
-            <div>
-              <Modal show={this.state.loginRequired}>
-                {loginComp}
-              </Modal>
-            </div>
+            <Aux>
+                {resData}
+            </Aux>
         );
     }
-};
+}
 
-export default Authentication;
+export default Scheduler;
