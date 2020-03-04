@@ -1,14 +1,17 @@
 from django.db import models
+from django.core.validators import RegexValidator;
 
 class Client(models.Model):
     clientId = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    phone = models.CharField(db_index=True, max_length=10)
+    phone = models.CharField(db_index=True, max_length=10, validators=[
+        RegexValidator('^[0-9]+$',
+            message='Phone must only contain numbers'
+        ),
+    ])
 
     def __str__(self):
         return self.phone
-
-
 
 class Job(models.Model):
     jobId = models.AutoField(primary_key=True)

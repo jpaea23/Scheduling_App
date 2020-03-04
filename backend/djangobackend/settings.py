@@ -134,11 +134,11 @@ REST_FRAMEWORK = {
 }
 
 REST_KNOX = {
-    #TODO Set to 1 minute for testing purposes -> Update for prod use
+#TODO Set to 30 minute for testing purposes -> Update for prod use
   'TOKEN_TTL': timedelta(minutes=30),
 }
 
-#todo - utilise Cors Security whitelisting
+#TODO - utilise Cors Security whitelisting
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
 ]
