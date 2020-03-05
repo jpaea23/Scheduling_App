@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import RegexValidator;
+from django.core.validators import RegexValidator
 
 class Client(models.Model):
     clientId = models.AutoField(primary_key=True)
