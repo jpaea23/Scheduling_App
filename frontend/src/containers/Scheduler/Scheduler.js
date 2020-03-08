@@ -1,12 +1,11 @@
 import React from 'react';
-
 import axios from '../../config/Axios';
 import * as APIConst from '../../config/APIConst'
-
 import AuthLogin from '../../components/Authentication/AuthLogin/AuthLogin';
 import Spinner from '../../components/UI/SpinnerComp/SpinnerComp';
 import Modal from '../../components/UI/Modal/Modal';
 import Aux from '../../hoc/Aux/Aux';
+import Calendar from '../Calendar/Calendar'
 
 
 class Scheduler extends React.Component{
@@ -17,7 +16,7 @@ class Scheduler extends React.Component{
                 username: '',
                 password: ''
             },
-            isAuthenticated: false,
+            isAuthenticated: true,
             user: null,
             token: null,
             error: false,
@@ -80,11 +79,17 @@ class Scheduler extends React.Component{
         </div>
       );
 
+      let calendar_sched = (this.state.isAuthenticated) ?(
+      <Aux>
+        <Calendar/>
+      </Aux> ): null;
+
       return(
           <Aux>
             <Modal show={!this.state.isAuthenticated}>
               {loginComp}
             </Modal>
+              {calendar_sched}
           </Aux>
       );
   }

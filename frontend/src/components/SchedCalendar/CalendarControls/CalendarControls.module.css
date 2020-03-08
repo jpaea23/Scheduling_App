@@ -1,0 +1,5 @@
+.Controls {
+    display: flex;
+    border: thin solid black;
+    padding: 5px;
+}
