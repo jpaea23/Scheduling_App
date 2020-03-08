@@ -12,6 +12,7 @@ djangorestframework = "*"
 django-cors-headers = "*"
 httpie = "*"
 django-rest-knox = "*"
+pylint = "*"
 
 [requires]
 python_version = "3.7"

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Client,Job
+from .models import Client, Job
 
 class ClientAdmin(admin.ModelAdmin):
 	list_display = ('clientId', 'name', 'phone')
@@ -7,6 +7,6 @@ class ClientAdmin(admin.ModelAdmin):
 admin.site.register(Client, ClientAdmin)
 
 class JobAdmin(admin.ModelAdmin):
-	list_display = ('jobId','client', 'created_date', 'job_date', 'address', 'status', 'description')
+	list_display = ('jobId', 'client', 'created_date', 'job_date', 'address', 'status', 'description')
 
 admin.site.register(Job, JobAdmin)
