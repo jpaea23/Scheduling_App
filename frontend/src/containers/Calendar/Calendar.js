@@ -4,39 +4,34 @@ import CalendarControls from '../../components/SchedCalendar/CalendarControls/Ca
 import CalendarContent from '../../components/SchedCalendar/CalendarContent/CalendarContent';
 import axios from '../../config/Axios'
 import * as ApiConstant from '../../config/APIConst'
+import dayjs from 'dayjs';
 
-//Display all objects for 1 date
+const days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+];
+
 class Calendar extends Component{
     constructor(props) {
         super(props);
         
-        let todayDate = new Date();
-        let month = todayDate.getMonth();
-        let year = todayDate.getFullYear();
-        let day = todayDate.getDate();
-        
-        const months = [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June',
-            'July',
-            'August',
-            'September',
-            'October',
-            'November',
-            'December'
-        ]
+        let todayDate = dayjs().format();
+        let month = dayjs(todayDate).format('M');
+        let year = dayjs().format('YYYY');
+        let day = dayjs().format('D');
+        let month_date = dayjs().format('MMMM')
 
         this.state = {
             today: todayDate,
             curr_month: month,
             curr_year: year,
             curr_day: day,
-            months_year: [...months],
-            month_date: months[month] + ' ' + year,
+            month_date: month_date,
             jobs: []
         }
 
@@ -54,78 +49,53 @@ class Calendar extends Component{
     }
 
     onCalChangeHandler = (e) => {
-        const months = [...this.state.months_year];
-
-        let newMonth = 0;
-        let newYear = 0;
-        let newDay = 0;
-
-        const newDate = this.getSundayDate(this.state.curr_year,this.state.curr_month,this.state.curr_day);
+        let newDate = this.getSundayDate(this.state.curr_year,this.state.curr_month,this.state.curr_day);
 
         switch(e.target.id){
             case 'Prev': 
-                newDate.setDate(newDate.getDate() - 7);
-                newMonth = newDate.getMonth();
-                newYear = newDate.getFullYear();
-                newDay = newDate.getDate();
+                newDate = dayjs(newDate).subtract(7, 'day');
                 break;
             case 'Next':
-                newDate.setDate(newDate.getDate() + 7);
-                newMonth = newDate.getMonth();
-                newYear = newDate.getFullYear();
-                newDay = newDate.getDate();
+                newDate = dayjs(newDate).add(7, 'day');
                 break;
             default:
-
+                newDate = dayjs();
+                break;
         }
 
         this.setState({
-            curr_month: newMonth,
-            curr_year: newYear,
-            curr_day: newDay,
-            month_date: months[newMonth] + ' ' + newYear
+            curr_month: newDate.format('M'),
+            curr_year: newDate.format('YYYY'),
+            curr_day: newDate.format('D'),
+            month_date: newDate.format('MMMM')
         })     
     }
 
     getSundayDate = (year, month , day) => {
-        const newDate = new Date(this.state.curr_year,this.state.curr_month,this.state.curr_day);
-        const dayofWeek = newDate.getDay(); 
-        newDate.setDate(newDate.getDate() - dayofWeek);
-
-        return newDate;
+        const new_date = dayjs(year + '-' + month + '-' + day).startOf('week').format();
+        return new_date;
     }
 
     getNumberOfDaysArr = () => { 
-        const newDate = this.getSundayDate(this.state.curr_year,this.state.curr_month,this.state.curr_day);
+        let newDate = this.getSundayDate(this.state.curr_year,this.state.curr_month,this.state.curr_day);
         let dayNo = [];
 
         for(let i = 0; i < 7; i++){
-            dayNo.push(newDate.toISOString());
-            newDate.setDate(newDate.getDate() + 1);
-            console.log(newDate.toISOString());
+            dayNo.push(dayjs(newDate).format('MMM DD'));
+            newDate = dayjs(newDate).add(1, 'day');
         }
 
         return dayNo;
     }
 
     render(){
-        const days = [
-            'Sunday',
-            'Monday',
-            'Tuesday',
-            'Wednesday',
-            'Thursday',
-            'Friday',
-            'Saturday'
-        ];
-
         const dayNo = this.getNumberOfDaysArr();
 
         return(
             <Aux>
                 <CalendarControls 
                  click={this.onCalChangeHandler}
-                 month={this.state.months_year[this.state.curr_month]} 
+                 month={this.state.month_date} 
                  year={this.state.curr_year}/>
                  <CalendarContent 
                  days={days} 

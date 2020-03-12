@@ -1,6 +1,6 @@
 import React from 'react';
 import CalendarDays from './CalendarDays/CalendarDays';
-import CalendarJobs from './CalendarJobs/CalendarJob'
+import CalendarJobs from './CalendarJobs/CalendarJobs'
 
 const calendarContent = (props) => {
 
@@ -8,13 +8,14 @@ const calendarContent = (props) => {
        return <CalendarDays key={day+i} day={day}/>
     });
 
-    // const month_day = props.start.map((count) => {
-    //     return <CalendarJobs key={count} date={count}/>
-    // });
-
-    const jobs = props.jobs.map(job => {
-        return <CalendarJobs key={job.jobId} date={job.address} />
+    //
+    const month_day = props.start.map((count) => {
+        return <CalendarJobs key={count} jobs={props.jobs} date={count}/>
     });
+
+    // const jobs = props.jobs.map(job => {
+    //     return <CalendarJobs key={job.jobId} date={job.address} />
+    // });
 
     return(
         <div className="table-responsive">
@@ -26,7 +27,7 @@ const calendarContent = (props) => {
                 </thead>
                 <tbody>
                     <tr>
-                        {jobs}
+                        {month_day}
                     </tr>
                 </tbody>
             </table>

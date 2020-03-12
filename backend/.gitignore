@@ -1,5 +1,5 @@
 scheduling_job/migrations/
 db.sqlite3
-#*.pyc
+*.pyc
 *.log
 *.pot
