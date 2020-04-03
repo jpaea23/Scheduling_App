@@ -1,12 +1,10 @@
 import React from 'react';
-import Aux from '../../../../hoc/Aux/Aux';
+import styles from './CalendarDays.module.css'
 
 const calendarDays = (props) => (
-    <Aux>
-        <th scope='col'>
-            <p>{props.day}</p>
-        </th>
-    </Aux>
+    <div className={styles.Day}>
+        <p>{props.day}</p>
+    </div>
 )
 
 export default calendarDays;

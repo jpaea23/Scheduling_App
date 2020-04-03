@@ -16,7 +16,7 @@ class Scheduler extends React.Component{
                 username: '',
                 password: ''
             },
-            isAuthenticated: true,
+            isAuthenticated: false,
             user: null,
             token: null,
             error: false,
@@ -79,10 +79,8 @@ class Scheduler extends React.Component{
         </div>
       );
 
-      let calendar_sched = (this.state.isAuthenticated) ?(
-      <Aux>
-        <Calendar/>
-      </Aux> ): null;
+      let calendar_sched = (this.state.isAuthenticated) ?
+        <Calendar/>: null;
 
       return(
           <Aux>

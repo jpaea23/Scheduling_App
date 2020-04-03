@@ -1,16 +1,7 @@
 import dayjs from 'dayjs';
 
-function getSundayDate(year, month, day) {
-    const date = dayjs(new Date(year,month,day));
-    console.log(date);
-    const sumDay = dayjs().day();
-    const sun = dayjs(date).subtract(sumDay, 'day').format();
-    return sun;
-}
-
 function onCalChangeHandler(e){
-    let sun = new Date();
-    let newDate = getSundayDate(sun.getFullYear(), sun.getMonth(), sun.getDate());
+    let newDate = dayjs().format('2020-03-18')
     switch(e){
         case 'Prev': 
             newDate = dayjs(newDate).subtract(7, 'day')
@@ -20,10 +11,13 @@ function onCalChangeHandler(e){
             break;
         default:
     }
-    newDate = dayjs(newDate).format();
-    return newDate;
+
+    return newDate.format('YYYY-MM-D');
 }
 
-test('get Sunday Date', () => {
-    expect(onCalChangeHandler('Next')).toBe();
+test('date changer', () => {
+    //Next test
+    expect(onCalChangeHandler('Next')).toBe('2020-03-25');
+    //Prev test
+    expect(onCalChangeHandler('Prev')).toBe('2020-03-11');
 });

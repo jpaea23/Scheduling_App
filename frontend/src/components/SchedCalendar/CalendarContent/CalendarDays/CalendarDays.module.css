@@ -1,11 +1,13 @@
-.CalendarDays {
-    display: block;
-    box-sizing: border-box;
-    border:thin solid black;
+.Day {
+    border: 1px solid black;
+    text-align: center;
+    width: 14.3%;
 }
 
-p {
-    margin:4px;
-    font-size: large;
-    font-weight: bold;
+.Day p {
+    font-size: calc(100% + 1vw);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    height: 100%;
+    color: black;
+
 }

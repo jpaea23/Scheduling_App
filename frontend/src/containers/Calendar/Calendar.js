@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import Aux from '../../hoc/Aux/Aux';
 import CalendarControls from '../../components/SchedCalendar/CalendarControls/CalendarControls';
 import CalendarContent from '../../components/SchedCalendar/CalendarContent/CalendarContent';
+import styles from './Calendar.module.css'
 import axios from '../../config/Axios'
 import * as ApiConstant from '../../config/APIConst'
 import dayjs from 'dayjs';
@@ -19,26 +19,22 @@ const days = [
 class Calendar extends Component{
     constructor(props) {
         super(props);
-        
-        let todayDate = dayjs().format();
-        let month = dayjs(todayDate).format('M');
-        let year = dayjs().format('YYYY');
-        let day = dayjs().format('D');
-        let month_date = dayjs().format('MMMM')
+        let date = new Date('2020-03-11');
+        let now = dayjs(date).format('YYYY-MM-DD');
 
         this.state = {
-            today: todayDate,
-            curr_month: month,
-            curr_year: year,
-            curr_day: day,
-            month_date: month_date,
-            jobs: []
+            today: now,
+            jobs: {},
+            date_selected: now
         }
+        console.log('[Calendar.js] - Constructor')
 
         //Axio get jobs 
-        axios.get(ApiConstant.ALL_JOBS)
+        const dateObj = {
+            todayDate: now
+        }
+        axios.post(ApiConstant.FILTER_JOBS, dateObj)
             .then(resp => {
-                console.log(resp.data);
                 this.setState({
                     jobs: resp.data
                 });
@@ -48,60 +44,73 @@ class Calendar extends Component{
             });
     }
 
-    onCalChangeHandler = (e) => {
-        let newDate = this.getSundayDate(this.state.curr_year,this.state.curr_month,this.state.curr_day);
+    componentDidMount(){
+        console.log('[Calendar.js]')
+    }
 
+    onCalChangeHandler = (e) => {
+        let new_date = this.state.today
+        let day_select = this.state.date_selected;
         switch(e.target.id){
             case 'Prev': 
-                newDate = dayjs(newDate).subtract(7, 'day');
+                new_date = dayjs(new_date).subtract(7, 'day');
+                day_select = new_date.endOf('week').format('YYYY-MM-DD');
                 break;
             case 'Next':
-                newDate = dayjs(newDate).add(7, 'day');
+                new_date = dayjs(new_date).add(7, 'day');
+                day_select = new_date.startOf('week').format('YYYY-MM-DD');
                 break;
             default:
-                newDate = dayjs();
+                new_date = dayjs();
+                day_select = new_date.startOf('week').format('YYYY-MM-DD');
                 break;
         }
 
-        this.setState({
-            curr_month: newDate.format('M'),
-            curr_year: newDate.format('YYYY'),
-            curr_day: newDate.format('D'),
-            month_date: newDate.format('MMMM')
-        })     
-    }
-
-    getSundayDate = (year, month , day) => {
-        const new_date = dayjs(year + '-' + month + '-' + day).startOf('week').format();
-        return new_date;
-    }
-
-    getNumberOfDaysArr = () => { 
-        let newDate = this.getSundayDate(this.state.curr_year,this.state.curr_month,this.state.curr_day);
-        let dayNo = [];
-
-        for(let i = 0; i < 7; i++){
-            dayNo.push(dayjs(newDate).format('MMM DD'));
-            newDate = dayjs(newDate).add(1, 'day');
+        //Axio get jobs 
+        const dateObj = {
+            todayDate: new_date.format('YYYY-MM-D')
         }
+        axios.post(ApiConstant.FILTER_JOBS, dateObj)
+            .then(resp => {
+                this.setState({
+                    jobs: resp.data
+                });
+            })
+            .catch(err => {
+                console.log(err)
+            });
 
-        return dayNo;
+        console.log(day_select)
+
+        this.setState({
+            today: new_date.format('YYYY-MM-DD'),
+            date_selected: day_select
+        })
+    }
+
+    onDayChangeHandler = (date) =>{
+        this.setState({
+            date_selected:date
+        })
     }
 
     render(){
-        const dayNo = this.getNumberOfDaysArr();
+        const month = dayjs(this.state.today).format('MMMM')
+        const year = dayjs(this.state.today).format('YYYY')
 
         return(
-            <Aux>
+            <div className={styles.Calendar}>
                 <CalendarControls 
                  click={this.onCalChangeHandler}
-                 month={this.state.month_date} 
-                 year={this.state.curr_year}/>
+                 month={month} 
+                 year={year}/>
                  <CalendarContent 
-                 days={days} 
-                 start={dayNo}
-                 jobs={this.state.jobs}/>
-            </Aux>
+                 days={days}
+                 jobs={this.state.jobs}
+                 dateSelect={this.state.date_selected}
+                 day_clicked={this.onDayChangeHandler}
+                 />
+            </div>
         )
     }
 } 

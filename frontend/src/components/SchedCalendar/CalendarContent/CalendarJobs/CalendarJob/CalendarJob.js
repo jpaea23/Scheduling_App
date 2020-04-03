@@ -1,11 +1,11 @@
 import React from 'react';
+import Aux from '../../../../../hoc/Aux/Aux';
 
 const calendarJob = (props) => (
-        <li>
+       <Aux>
+            {props.name}
             {props.address}
-            {props.description}
-            {props.status}
-        </li>
+       </Aux>
 );
 
 export default calendarJob;
