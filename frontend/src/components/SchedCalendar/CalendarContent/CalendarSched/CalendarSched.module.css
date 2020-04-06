@@ -9,14 +9,12 @@
 }
 
 .Filled {
-    background-color: rgba(255, 64, 54, 0.85)
+    background-color: rgb(255, 64, 54, 0.85)
 }
 
 .Open {
     background-color: rgb(1,255,112, 0.85);
 }
-
-
 
 .Animation {
     position: absolute;

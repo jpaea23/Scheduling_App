@@ -84,15 +84,16 @@ class Calendar extends Component{
         return(
             <div className={styles.Calendar}>
                 <CalendarControls 
-                 click={this.onCalChangeHandler}
-                 month={dayjs(this.state.today).format('MMMM')} 
-                 year={dayjs(this.state.today).format('YYYY')}/>
-                 <CalendarContent 
-                 days={days}
-                 jobs={this.state.jobs}
-                 dateSelect={this.state.date_selected}
-                 day_clicked={this.onDayChangeHandler}
-                 />
+                  click={this.onCalChangeHandler}
+                  month={dayjs(this.state.today).format('MMMM')} 
+                  year={dayjs(this.state.today).format('YYYY')}
+                />
+                <CalendarContent 
+                  days={days}
+                  jobs={this.state.jobs}
+                  dateSelect={this.state.date_selected}
+                  day_clicked={this.onDayChangeHandler}
+                />
             </div>
         )
     }
