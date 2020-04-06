@@ -1,0 +1,27 @@
+.Content .DaysOfWeek {
+    display: flex;
+    box-sizing: border-box;
+}
+
+.Content .DateOfWeek {
+    display: flex;
+    box-sizing: border-box;
+}
+
+.Content .Container {
+    padding: 0px;
+    display: grid;
+    background-color: lightgrey;
+    height: 600px;
+    margin: 10px 30px;
+    border: thin solid black;
+    grid-template-columns: 10% auto;
+    position: relative;
+}
+
+.Content .SelectDate {
+    font-size: 33px;
+    color: black;
+    font-weight: 580;
+    letter-spacing: 2px;
+}

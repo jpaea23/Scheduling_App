@@ -1,12 +1,11 @@
 import React from 'react';
-
 import axios from '../../config/Axios';
 import * as APIConst from '../../config/APIConst'
-
 import AuthLogin from '../../components/Authentication/AuthLogin/AuthLogin';
 import Spinner from '../../components/UI/SpinnerComp/SpinnerComp';
 import Modal from '../../components/UI/Modal/Modal';
 import Aux from '../../hoc/Aux/Aux';
+import Calendar from '../Calendar/Calendar'
 
 
 class Scheduler extends React.Component{
@@ -26,7 +25,7 @@ class Scheduler extends React.Component{
 
     }
 
-    loginHandler = event => {
+    loginHandler = (event) => {
       //loading spin
       this.setState({loading:true});
 
@@ -35,8 +34,6 @@ class Scheduler extends React.Component{
         username: this.state.credentials.username,
         password: this.state.credentials.password
       }
-
-      console.log(credObj);
       
       axios
             .post(APIConst.LOGIN_URL, credObj)
@@ -79,12 +76,17 @@ class Scheduler extends React.Component{
                   />
         </div>
       );
+      
+      //TODO Use Router to prevent bug.
+      let calendar_sched = (this.state.isAuthenticated) ?
+        <Calendar/>: null;
 
       return(
           <Aux>
             <Modal show={!this.state.isAuthenticated}>
               {loginComp}
             </Modal>
+              {calendar_sched}
           </Aux>
       );
   }
