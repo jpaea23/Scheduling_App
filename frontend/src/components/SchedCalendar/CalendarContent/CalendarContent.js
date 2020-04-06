@@ -6,63 +6,80 @@ import CalendarSched from './CalendarSched/CalendarSched';
 import CalendarTimeslot from './CalendarTimeslot/CalendarTimeslot';
 import dayjs from 'dayjs';
 import * as TimeConst from '../../../config/TimeSlotConst';
+import PropTypes from 'prop-types';
 
-const calendarContent = (props) => {
-    //Days Of the week
-    const days_of_week = props.days.map((day,i) =>{
-       return <CalendarDays key={day} day={day} />
-    });
+const CalendarContent = (props) => {
+  // Days Of the week
+  const daysOfWeek = props.days.map((day, i) =>{
+    return <CalendarDays key={day} day={day} />;
+  });
 
-   //7 Day Calendar Content
-   const all_jobs  = Object.keys(props.jobs).map(job => {
-       const arr_jobs = Object.keys(props.jobs[job]);
-       return <CalendarJobs clicked={props.day_clicked} day_jobs={arr_jobs} key={job} date={job}/>
-   });
+  // 7 Day Calendar Content
+  const allJobs = Object.keys(props.jobs).map((job) => {
+    const arrJobs = Object.keys(props.jobs[job]);
+    return <CalendarJobs
+      clicked={props.day_clicked}
+      dayJobs={arrJobs}
+      key={job}
+      date={job}/>;
+  });
 
-   //Timeslot of single day - 17 = number of timeslots in a single day 1 - 17
-   //slice(7) is excluding numbers 1 - 7 in the Array
-   //timeslot = [7,8,9,10,11,12,13,14,15,16,17] : Workday 7am to 5pm
-   const timeslot = [...Array(17+1).keys()].slice(7);
+  // Timeslot of single day - 17 = number of timeslots in a single day 1 - 17
+  // slice(7) is excluding numbers 1 - 7 in the Array
+  // timeslot = [7,8,9,10,11,12,13,14,15,16,17] : Workday 7am to 5pm
+  const timeslot = [...Array(17+1).keys()].slice(7);
 
-   const calendar_content = timeslot.map(time => {
-       return <CalendarTimeslot key={time} time={time}/>
-   })
+  const calendarContent = timeslot.map((time) => {
+    return <CalendarTimeslot key={time} time={time}/>;
+  });
 
-   let all_timeslot = null;
-   if(props.jobs[props.dateSelect] !== undefined){
-    for (let job in props.jobs[props.dateSelect]){
-        const duration = TimeConst.DEFAULT_DURATION;
-        const index = timeslot.indexOf(parseInt(job));
+  let allTimeSlots = null;
+  if (props.jobs[props.dateSelect] !== undefined) {
+    for (const job in props.jobs[props.dateSelect]) {
+      const duration = TimeConst.DEFAULT_DURATION;
+      const index = timeslot.indexOf(parseInt(job));
 
-        //replace index of array timeslot - duration will determine how many index's will need to be replaces
-        timeslot[index] = {[job]:props.jobs[props.dateSelect][job]};
-        if(duration > 1){
-            timeslot.splice(index + 1, duration - 1);
-        }
+      // replace index of array timeslot
+      // duration will determine how many index's will need to be replaces
+      timeslot[index] = {[job]: props.jobs[props.dateSelect][job]};
+      if (duration > 1) {
+        timeslot.splice(index + 1, duration - 1);
+      }
     };
 
-    all_timeslot = timeslot.map((time,i) => {
-        return <CalendarSched key={time + i} timeslot={time}/>
-    })    
-   };
-   
-    return(
-        <div className={styles.Content}>
-            <div className={styles.DaysOfWeek}>
-                {days_of_week}
-            </div>
-            <div className={styles.DateOfWeek}>
-                {all_jobs}
-            </div>
-            <div style={{margin: '50px'}}>
-                <p className={styles.SelectDate}>{dayjs(props.dateSelect).format('DD-MMM').toUpperCase()}</p>
-                <div className={styles.Container}>
-                    {all_timeslot}
-                    {calendar_content}
-                </div>
-            </div>
-        </div>
-    )
-}
+    allTimeSlots = timeslot.map((time, i) => {
+      return <CalendarSched
+        key={time + i}
+        timeslot={time}/>;
+    });
+  };
 
-export default calendarContent
+  return (
+    <div className={styles.Content}>
+      <div className={styles.DaysOfWeek}>
+        {daysOfWeek}
+      </div>
+      <div className={styles.DateOfWeek}>
+        {allJobs}
+      </div>
+      <div style={{margin: '50px'}}>
+        <p className={styles.SelectDate}>
+          {dayjs(props.dateSelect).format('DD-MMM').toUpperCase()}
+        </p>
+        <div className={styles.Container}>
+          {allTimeSlots}
+          {calendarContent}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+CalendarContent.propTypes= {
+  days: PropTypes.array,
+  jobs: PropTypes.object,
+  dateSelect: PropTypes.any,
+  day_clicked: PropTypes.func,
+};
+
+export default CalendarContent;

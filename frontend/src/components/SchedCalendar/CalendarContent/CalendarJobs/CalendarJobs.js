@@ -1,18 +1,28 @@
 import React from 'react';
-import dayjs from 'dayjs'; 
-import styles from './CalendarJobs.module.css'
+import dayjs from 'dayjs';
+import styles from './CalendarJobs.module.css';
+import PropTypes from 'prop-types';
 
-const calendarJobs = (props) => {
-    const date = dayjs(props.date).format("DD-MMM");
-    const job_in_day_arr = props.day_jobs;
-  
-   return(
-       <div className={styles.Date}>
-        <button onClick={() => props.clicked(dayjs(props.date).format("YYYY-MM-DD"))} className="border btn btn-primary btn-lg btn-block">{date}</button>
-        <p>Booked Jobs: {job_in_day_arr.length}</p>
-        <p>Availabilities: {4 - job_in_day_arr.length}</p>
-       </div>
-   );
-}
+const CalendarJobs = (props) => {
+  const date = dayjs(props.date).format('DD-MMM');
+  const jobInDayArr = props.dayJobs;
 
-export default calendarJobs;
+  return (
+    <div className={styles.Date}>
+      <button
+        onClick={() => props.clicked(dayjs(props.date).format('YYYY-MM-DD'))}
+        className="border btn btn-primary btn-lg btn-block">{date}
+      </button>
+      <p>Booked Jobs: {jobInDayArr.length}</p>
+      <p>Availabilities: {4 - jobInDayArr.length}</p>
+    </div>
+  );
+};
+
+CalendarJobs.propTypes= {
+  date: PropTypes.string,
+  clicked: PropTypes.func,
+  dayJobs: PropTypes.array,
+};
+
+export default CalendarJobs;

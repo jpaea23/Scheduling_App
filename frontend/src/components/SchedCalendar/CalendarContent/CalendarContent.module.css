@@ -1,14 +1,14 @@
-.Content .DaysOfWeek{
+.Content .DaysOfWeek {
     display: flex;
     box-sizing: border-box;
 }
 
-.Content .DateOfWeek{
+.Content .DateOfWeek {
     display: flex;
     box-sizing: border-box;
 }
 
-.Content .Container{
+.Content .Container {
     padding: 0px;
     display: grid;
     background-color: lightgrey;
@@ -19,7 +19,7 @@
     position: relative;
 }
 
-.Content .SelectDate{
+.Content .SelectDate {
     font-size: 33px;
     color: black;
     font-weight: 580;

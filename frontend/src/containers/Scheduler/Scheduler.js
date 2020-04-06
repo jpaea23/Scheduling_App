@@ -25,7 +25,7 @@ class Scheduler extends React.Component{
 
     }
 
-    loginHandler = event => {
+    loginHandler = (event) => {
       //loading spin
       this.setState({loading:true});
 
@@ -34,8 +34,6 @@ class Scheduler extends React.Component{
         username: this.state.credentials.username,
         password: this.state.credentials.password
       }
-
-      console.log(credObj);
       
       axios
             .post(APIConst.LOGIN_URL, credObj)

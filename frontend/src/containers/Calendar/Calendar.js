@@ -24,7 +24,8 @@ class Calendar extends Component{
         this.state = {
             today: now,
             jobs: {},
-            date_selected: now
+            date_selected: now,
+            error: false
         }
 
         //Axio get jobs 
@@ -38,14 +39,14 @@ class Calendar extends Component{
                 });
             })
             .catch(err => {
-                console.log(err)
+                this.setState({error: err});
             });
     }
 
-    onCalChangeHandler = (e) => {
+    onCalChangeHandler = (date) => {
         let new_date = this.state.today
         let day_select = this.state.date_selected;
-        if(e.target.id === 'Prev'){
+        if(date.target.id === 'Prev'){
             new_date = dayjs(new_date).subtract(7, 'day');
             day_select = new_date.endOf('week').format('YYYY-MM-DD');
         }else{
@@ -53,7 +54,7 @@ class Calendar extends Component{
             day_select = new_date.startOf('week').format('YYYY-MM-DD');
         }
 
-        //Axio get jobs 
+        // Axio get jobs 
         const dateObj = {
             todayDate: new_date.format('YYYY-MM-D')
         }

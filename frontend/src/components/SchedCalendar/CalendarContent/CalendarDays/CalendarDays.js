@@ -1,10 +1,15 @@
 import React from 'react';
-import styles from './CalendarDays.module.css'
+import styles from './CalendarDays.module.css';
+import PropTypes from 'prop-types';
 
-const calendarDays = (props) => (
-    <div className={styles.Day}>
-        <p>{props.day}</p>
-    </div>
-)
+const CalendarDays = (props) => (
+  <div className={styles.Day}>
+    <p>{props.day}</p>
+  </div>
+);
 
-export default calendarDays;
+CalendarDays.propTypes={
+  day: PropTypes.string,
+};
+
+export default CalendarDays;
