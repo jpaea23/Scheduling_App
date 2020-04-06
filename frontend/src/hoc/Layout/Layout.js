@@ -7,7 +7,6 @@ class Layout extends React.Component {
     render() {
         return (
             <Aux>
-                Toolbar, SideDraw
                 <main className={styles.Content}>
                     {this.props.children}
                 </main>

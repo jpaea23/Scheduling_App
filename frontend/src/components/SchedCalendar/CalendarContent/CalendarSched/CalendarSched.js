@@ -9,50 +9,47 @@ const CalendarSched = (props) => {
     },[]);
 
     let disabled = false;
-    let box_render = {
-        position: 'absolute',
-        left: '12%',
-        color: 'white',
-       
-    };
+    let box_render = {};
+    let con_class = '';
 
-    let startime = props.timeslot;
-    let start_pos = (startime - 7) * TimeConst.JOB_HEIGHT;
-    let end_pos =  start_pos + (TimeConst.DEFAULT_DURATION * TimeConst.JOB_HEIGHT);
+    let start_pos; 
+    let end_pos;
 
     let client_name = '';
     let client_number = '';
     let job_address = '';
     let job_description = '';
 
-    if(props.found_jobs !== undefined) {
-        if(props.timeslot in props.found_jobs){
-            box_render.height = end_pos - start_pos;
-            box_render.backgroundColor = '#FF4136';
-            box_render.top = start_pos;
-            box_render.width = '86%';
-            // box_render.zIndex= '1'
-            disabled=true;
+    if(typeof props.timeslot === 'object'){
+        disabled = true;
+        const key = Object.keys(props.timeslot);
+        start_pos = (parseInt(key) - 7) * TimeConst.JOB_HEIGHT;
+        end_pos = start_pos + (TimeConst.DEFAULT_DURATION * TimeConst.JOB_HEIGHT) //TODO: Object duration value 
+        box_render.height = end_pos - start_pos;
+        box_render.top = start_pos;
+        con_class = styles.Filled;
 
-            const job = props.found_jobs[props.timeslot];
-            const client = job['client']; 
-            client_name = client['name'];
-            client_number = client['phone'];
-            job_address = job['address'];
-            job_description = job['description'];
-        }else{
-            box_render.height = end_pos - start_pos;
-            box_render.backgroundColor = '#01FF70';
-            box_render.top = start_pos;
-            box_render.width = '86%';
-            // box_render.zIndex= '1'
-        }
-    };
+        const job = props.timeslot[key];
+        const client = job['client']; 
+        client_name = 'Name: ' + client['name'];
+        client_number = 'Phone: ' + client['phone'];
+        job_address = 'Address: ' + job['address'];
+        job_description = 'Description: ' + job['description'];
+        
+    }else if(props.timeslot === 11 || props.timeslot === 17){
+        box_render.display = 'none';
+    }else{
+        start_pos = (props.timeslot - 7) * TimeConst.JOB_HEIGHT;
+        end_pos = start_pos + (1 * TimeConst.JOB_HEIGHT);
+        box_render.height = end_pos - start_pos;
+        box_render.top = start_pos;
+        con_class = styles.Open;
+    }
 
     return(
         <Aux>
-            <button className={styles.Timeslot} disabled={disabled} style={box_render}>
-                <div className={!disabled ? styles.Animation : styles.NoAnimation}><p>Make A Booking?</p></div>
+            <button className={[styles.Timeslot, con_class].join(' ')} disabled={disabled} style={box_render}>
+                <div className={!disabled ? styles.Animation : styles.NoAnimation}><p>Make Booking</p></div>
                 <ul>
                     <li>
                         {client_name}

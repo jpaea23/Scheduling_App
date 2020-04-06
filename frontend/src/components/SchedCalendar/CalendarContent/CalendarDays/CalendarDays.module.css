@@ -2,12 +2,12 @@
     border: 1px solid black;
     text-align: center;
     width: 14.3%;
+    height: 60px;
+    line-height: 60px;
 }
 
 .Day p {
     font-size: calc(100% + 1vw);
     font-family: Georgia, 'Times New Roman', Times, serif;
-    height: 100%;
     color: black;
-
 }

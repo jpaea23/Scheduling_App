@@ -78,7 +78,8 @@ class Scheduler extends React.Component{
                   />
         </div>
       );
-
+      
+      //TODO Use Router to prevent bug.
       let calendar_sched = (this.state.isAuthenticated) ?
         <Calendar/>: null;
 

@@ -19,15 +19,13 @@ const days = [
 class Calendar extends Component{
     constructor(props) {
         super(props);
-        let date = new Date('2020-03-11');
-        let now = dayjs(date).format('YYYY-MM-DD');
+        let now = dayjs().format('YYYY-MM-DD');
 
         this.state = {
             today: now,
             jobs: {},
             date_selected: now
         }
-        console.log('[Calendar.js] - Constructor')
 
         //Axio get jobs 
         const dateObj = {
@@ -44,26 +42,15 @@ class Calendar extends Component{
             });
     }
 
-    componentDidMount(){
-        console.log('[Calendar.js]')
-    }
-
     onCalChangeHandler = (e) => {
         let new_date = this.state.today
         let day_select = this.state.date_selected;
-        switch(e.target.id){
-            case 'Prev': 
-                new_date = dayjs(new_date).subtract(7, 'day');
-                day_select = new_date.endOf('week').format('YYYY-MM-DD');
-                break;
-            case 'Next':
-                new_date = dayjs(new_date).add(7, 'day');
-                day_select = new_date.startOf('week').format('YYYY-MM-DD');
-                break;
-            default:
-                new_date = dayjs();
-                day_select = new_date.startOf('week').format('YYYY-MM-DD');
-                break;
+        if(e.target.id === 'Prev'){
+            new_date = dayjs(new_date).subtract(7, 'day');
+            day_select = new_date.endOf('week').format('YYYY-MM-DD');
+        }else{
+            new_date = dayjs(new_date).add(7, 'day');
+            day_select = new_date.startOf('week').format('YYYY-MM-DD');
         }
 
         //Axio get jobs 
@@ -80,8 +67,6 @@ class Calendar extends Component{
                 console.log(err)
             });
 
-        console.log(day_select)
-
         this.setState({
             today: new_date.format('YYYY-MM-DD'),
             date_selected: day_select
@@ -95,15 +80,12 @@ class Calendar extends Component{
     }
 
     render(){
-        const month = dayjs(this.state.today).format('MMMM')
-        const year = dayjs(this.state.today).format('YYYY')
-
         return(
             <div className={styles.Calendar}>
                 <CalendarControls 
                  click={this.onCalChangeHandler}
-                 month={month} 
-                 year={year}/>
+                 month={dayjs(this.state.today).format('MMMM')} 
+                 year={dayjs(this.state.today).format('YYYY')}/>
                  <CalendarContent 
                  days={days}
                  jobs={this.state.jobs}

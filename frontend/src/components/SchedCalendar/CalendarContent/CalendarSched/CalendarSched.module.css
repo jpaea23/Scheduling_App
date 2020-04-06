@@ -1,15 +1,34 @@
+.Timeslot{
+    position: absolute;
+    left: 12%;
+    color: white;
+    top: 0;
+    width: 86%;
+    z-index: 1;
+    border-radius: 8px;
+}
+
+.Filled{
+    background-color: rgba(255, 64, 54, 0.85)
+}
+
+.Open {
+    background-color: rgb(1,255,112, 0.85);
+}
+
+
+
 .Animation{
     position: absolute;
+    border-radius: 8px;
     width: 100%;
     height: 100%;
-    background-color: rgb(31, 177, 48);
+    background-color:  rgb(16, 190, 92);
     left: 0;
     top: 0;
     opacity: 0;
     z-index: 100;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: 6px;
 }
 
 .Animation:hover {
@@ -20,12 +39,17 @@
 .Animation p {
     font-weight: bold;
     font-family: Georgia, 'Times New Roman', Times, serif;
-    color: black;
-    background-color: whitesmoke;
-    font-size: 180%;
-    border:thin solid black;
-    min-height: 44%;
-    min-width: 60%;
+    color: white;
+    font-size: 27px;
+    height: 70%;
+    width: 100%;
+    margin: auto;
+}
+
+@media(max-width:430px){
+    .Animation p {
+        font-size: 20px;
+    }
 }
 
 .NoAnimation{
@@ -34,4 +58,7 @@
 
 .Timeslot ul {
     list-style: none;
+    margin: 0px;
+    padding: 0px;
+    text-align: left;
 }

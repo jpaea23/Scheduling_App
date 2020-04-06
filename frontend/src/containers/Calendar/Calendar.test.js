@@ -2,16 +2,14 @@ import dayjs from 'dayjs';
 
 function onCalChangeHandler(e){
     let newDate = dayjs().format('2020-03-18')
-    switch(e){
-        case 'Prev': 
-            newDate = dayjs(newDate).subtract(7, 'day')
-            break;
-        case 'Next':
-            newDate = dayjs(newDate).add(7, 'day')
-            break;
-        default:
+    if(e === 'Prev'){
+        new_date = dayjs(new_date).subtract(7, 'day');
+        day_select = new_date.endOf('week').format('YYYY-MM-DD');
+    }else{
+        new_date = dayjs(new_date).add(7, 'day');
+        day_select = new_date.startOf('week').format('YYYY-MM-DD');
     }
-
+    
     return newDate.format('YYYY-MM-D');
 }
 
