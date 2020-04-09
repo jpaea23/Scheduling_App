@@ -44,11 +44,11 @@ const Login = (props) => {
 };
 
 Login.propTypes={
-  error: PropTypes.object,
+  error: PropTypes.bool,
   errorMessage: PropTypes.string,
   loginSubmit: PropTypes.func,
-  usernameChange: PropTypes.string,
-  passwordChange: PropTypes.string,
+  usernameChange: PropTypes.func,
+  passwordChange: PropTypes.func,
 };
 
 export default Login;

@@ -22,12 +22,13 @@ class Scheduler extends React.Component{
             error: false,
             loading: false
         }
-
     }
 
     loginHandler = (event) => {
       //loading spin
-      this.setState({loading:true});
+      this.setState({
+        loading:true
+      });
 
       //Credentials Object 
       const credObj = {

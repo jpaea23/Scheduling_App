@@ -25,3 +25,11 @@
     font-weight: 580;
     letter-spacing: 2px;
 }
+
+.Content .Form {
+    background-color: rgb(252, 252, 252);
+    margin: 50px 100px;
+    border-radius: 30px;
+    box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+    border: 6px solid #305A72;
+}
