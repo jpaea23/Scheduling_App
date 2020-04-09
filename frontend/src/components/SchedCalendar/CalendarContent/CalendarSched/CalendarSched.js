@@ -1,14 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Aux from '../../../../hoc/Aux/Aux';
 import * as TimeConst from '../../../../config/TimeSlotConst';
 import styles from './CalendarSched.module.css';
 import PropTypes from 'prop-types';
 
 const CalendarSched = (props) => {
-  useEffect(() => {
-    console.log('Use Effect [CalendarSched.js]');
-  }, []);
-
   let disabled = false;
   const boxRender = {};
   let condClass = '';
@@ -49,7 +45,9 @@ const CalendarSched = (props) => {
 
   return (
     <Aux>
-      <button className={[styles.Timeslot, condClass].join(' ')}
+      <button
+        onClick={() => props.clicked(props.timeslot)}
+        className={[styles.Timeslot, condClass].join(' ')}
         disabled={disabled}
         style={boxRender}>
         <div className={!disabled ? styles.Animation : styles.NoAnimation}>
@@ -75,7 +73,8 @@ const CalendarSched = (props) => {
 };
 
 CalendarSched.propTypes= {
-  timeslot: PropTypes.object,
+  timeslot: PropTypes.any,
+  clicked: PropTypes.func,
 };
 
 export default CalendarSched;

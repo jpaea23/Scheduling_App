@@ -6,8 +6,14 @@ from rest_framework.permissions import AllowAny
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from .models import Job
-from .serializers import JobSerializer
+from .models import Job, Client
+from .serializers import JobSerializer, ClientSerializer
+
+class Clients(generics.ListCreateAPIView):
+    permission_classes = (permissions.AllowAny,)
+
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
 
 class Jobs(generics.ListCreateAPIView):
     permission_classes = (permissions.AllowAny,)

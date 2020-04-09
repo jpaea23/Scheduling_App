@@ -5,6 +5,8 @@ import styles from './Calendar.module.css'
 import axios from '../../config/Axios'
 import * as ApiConstant from '../../config/APIConst'
 import dayjs from 'dayjs';
+var utc = require('dayjs/plugin/utc')
+dayjs.extend(utc)
 
 const days = [
     'Sunday',
@@ -24,15 +26,23 @@ class Calendar extends Component{
         this.state = {
             today: now,
             jobs: {},
-            date_selected: now,
-            error: false
+            dateSelected: now,
+            timeSelected: null,
+            error: false,
+            toggleJobForm: false,
+            client: [],
+            address: "",
+            description: "",
+            clientId: "",
+            reloadJobs: false
         }
 
         //Axio get jobs 
         const dateObj = {
             todayDate: now
         }
-        axios.post(ApiConstant.FILTER_JOBS, dateObj)
+        axios
+            .post(ApiConstant.FILTER_JOBS, dateObj)
             .then(resp => {
                 this.setState({
                     jobs: resp.data
@@ -41,11 +51,54 @@ class Calendar extends Component{
             .catch(err => {
                 this.setState({error: err});
             });
+        
+        axios
+            .get(ApiConstant.ALL_CLIENTS)
+            .then(resp => {
+                this.setState({
+                    client: resp.data
+                });
+            })
+            .catch(err => {
+                this.setState({error: err});
+            })    
+    }
+
+    componentDidMount(){
+        console.log('Calendar.js Mounted');
+    };
+
+    componentDidUpdate(prevProps, prevState){
+       if(this.state.reloadJobs === true){
+         //Axio get jobs 
+         const dateObj = {
+            todayDate: this.state.today
+         }
+            axios.post(ApiConstant.FILTER_JOBS, dateObj)
+                .then(resp => {
+                    this.setState({
+                        jobs: resp.data,
+                        reloadJobs: false
+                    });
+                    console.log('reloading Job')
+                    console.log(this.state.jobs)
+                })
+                .catch(err => {
+                    this.setState({
+                        error: err,
+                        reloadJobs: false
+                    });
+                });
+       }
+       
+       if(this.state.toggleJobForm === true){
+        window.scrollTo(0,document.body.scrollHeight)
+       }
     }
 
     onCalChangeHandler = (date) => {
         let new_date = this.state.today
-        let day_select = this.state.date_selected;
+        let day_select = this.state.dateSelected;
         if(date.target.id === 'Prev'){
             new_date = dayjs(new_date).subtract(7, 'day');
             day_select = new_date.endOf('week').format('YYYY-MM-DD');
@@ -70,14 +123,61 @@ class Calendar extends Component{
 
         this.setState({
             today: new_date.format('YYYY-MM-DD'),
-            date_selected: day_select
-        })
+            dateSelected: day_select,
+            toggleJobForm: false,
+            timeSelected: null
+        });
     }
 
     onDayChangeHandler = (date) =>{
         this.setState({
-            date_selected:date
+            dateSelected:date,
+            timeSelected: null,
+            toggleJobForm: false,
+        });
+    }
+
+    toggleAddFormHandler = (time) => {
+        this.setState({
+                toggleJobForm: true,
+                timeSelected: time
+        });
+    }
+
+    cancelAddFormHandler = () => {
+        this.setState({
+            toggleJobForm: false,
+            timeSelected: null
+        });
+    }
+
+    onAddJobValueChangeHandler = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value
         })
+    }
+
+    onAddjobSubmitHandler = (event) =>{
+        const dateTime = this.state.dateSelected+' '+this.state.timeSelected+':00:00';
+        const subObj = {
+            clientId: this.state.clientId,
+            job_date: dateTime,
+            address: this.state.address,
+            status: false,
+            description: this.state.description
+        }
+        
+        //Axios call
+        axios
+            .post(ApiConstant.ADD_JOB,subObj)
+            .then(resp => {
+                this.setState({
+                    toggleJobForm: false,
+                    reloadJobs: true
+                });
+            })
+            .catch(err => console.log(err))
+        event.preventDefault();
     }
 
     render(){
@@ -91,8 +191,15 @@ class Calendar extends Component{
                 <CalendarContent 
                   days={days}
                   jobs={this.state.jobs}
-                  dateSelect={this.state.date_selected}
+                  dateSelect={this.state.dateSelected}
                   day_clicked={this.onDayChangeHandler}
+                  boolFormToggle={this.state.toggleJobForm}
+                  toggler={this.toggleAddFormHandler}
+                  timeSelect={this.state.timeSelected}
+                  listOfClients={this.state.client}
+                  jobFormOnChange={this.onAddJobValueChangeHandler}
+                  onAddJobSubmit={this.onAddjobSubmitHandler}
+                  onCancelAddForm={this.cancelAddFormHandler}
                 />
             </div>
         )

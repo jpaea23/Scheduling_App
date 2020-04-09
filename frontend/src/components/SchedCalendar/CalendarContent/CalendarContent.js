@@ -4,6 +4,7 @@ import CalendarJobs from './CalendarJobs/CalendarJobs';
 import styles from './CalendarContent.module.css';
 import CalendarSched from './CalendarSched/CalendarSched';
 import CalendarTimeslot from './CalendarTimeslot/CalendarTimeslot';
+import CalendarNewJob from './CalendarNewJob/CalendarNewJob';
 import dayjs from 'dayjs';
 import * as TimeConst from '../../../config/TimeSlotConst';
 import PropTypes from 'prop-types';
@@ -50,9 +51,21 @@ const CalendarContent = (props) => {
     allTimeSlots = timeslot.map((time, i) => {
       return <CalendarSched
         key={time + i}
-        timeslot={time}/>;
+        timeslot={time}
+        clicked={props.toggler}/>;
     });
   };
+
+  let addNewJobForm = null;
+  if (props.boolFormToggle) {
+    addNewJobForm = <CalendarNewJob
+      onChangeHandler={props.jobFormOnChange}
+      time={props.timeSelect}
+      date={props.dateSelect}
+      clients={props.listOfClients}
+      addNewJob={props.onAddJobSubmit}
+      cancelClick={props.onCancelAddForm}/>;
+  }
 
   return (
     <div className={styles.Content}>
@@ -71,6 +84,9 @@ const CalendarContent = (props) => {
           {calendarContent}
         </div>
       </div>
+      <div className={props.boolFormToggle ? styles.Form: ''}>
+        {addNewJobForm}
+      </div>
     </div>
   );
 };
@@ -80,6 +96,13 @@ CalendarContent.propTypes= {
   jobs: PropTypes.object,
   dateSelect: PropTypes.any,
   day_clicked: PropTypes.func,
+  toggler: PropTypes.func,
+  boolFormToggle: PropTypes.bool,
+  jobFormOnChange: PropTypes.func,
+  timeSelect: PropTypes.number,
+  listOfClients: PropTypes.array,
+  onAddJobSubmit: PropTypes.func,
+  onCancelAddForm: PropTypes.func,
 };
 
 export default CalendarContent;

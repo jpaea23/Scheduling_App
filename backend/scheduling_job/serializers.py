@@ -8,8 +8,8 @@ class ClientSerializer(serializers.ModelSerializer):
 
 #Creating Job Serializer for data transformation of API
 class JobSerializer(serializers.ModelSerializer):
-    client = ClientSerializer()
+    client = ClientSerializer(read_only=True)
+    clientId = serializers.PrimaryKeyRelatedField(queryset=Client.objects.all(), source='client', write_only=True)
     class Meta:
         model = Job
-        fields = ('jobId', 'client', 'created_date', 'job_date', 'address', 'status', 'description')
-        
+        fields = ('jobId', 'clientId', 'client', 'created_date', 'job_date', 'address', 'status', 'description')
