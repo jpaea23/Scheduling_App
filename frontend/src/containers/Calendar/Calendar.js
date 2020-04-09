@@ -41,6 +41,7 @@ class Calendar extends Component{
         const dateObj = {
             todayDate: now
         }
+        
         axios
             .post(ApiConstant.FILTER_JOBS, dateObj)
             .then(resp => {
@@ -63,14 +64,16 @@ class Calendar extends Component{
                 this.setState({error: err});
             })    
     }
-    
+
     componentDidUpdate(prevProps, prevState){
        if(this.state.reloadJobs === true){
-         //Axio get jobs 
-         const dateObj = {
+            //Axio get jobs 
+            const dateObj = {
             todayDate: this.state.today
-         }
-            axios.post(ApiConstant.FILTER_JOBS, dateObj)
+            }
+
+            axios
+                .post(ApiConstant.FILTER_JOBS, dateObj)
                 .then(resp => {
                     this.setState({
                         jobs: resp.data,
@@ -86,7 +89,7 @@ class Calendar extends Component{
        }
        
        if(this.state.toggleJobForm === true){
-        window.scrollTo(0,document.body.scrollHeight)
+            window.scrollTo(0,document.body.scrollHeight)
        }
     }
 
@@ -105,7 +108,9 @@ class Calendar extends Component{
         const dateObj = {
             todayDate: new_date.format('YYYY-MM-D')
         }
-        axios.post(ApiConstant.FILTER_JOBS, dateObj)
+
+        axios
+            .post(ApiConstant.FILTER_JOBS, dateObj)
             .then(resp => {
                 this.setState({
                     jobs: resp.data
@@ -133,8 +138,8 @@ class Calendar extends Component{
 
     toggleAddFormHandler = (time) => {
         this.setState({
-                toggleJobForm: true,
-                timeSelected: time
+            toggleJobForm: true,
+            timeSelected: time
         });
     }
 
@@ -152,7 +157,7 @@ class Calendar extends Component{
     }
 
     onAddjobSubmitHandler = (event) =>{
-        const dateTime = this.state.dateSelected+' '+this.state.timeSelected+':00:00';
+        const dateTime = `${this.state.dateSelected} ${this.state.timeSelected}:00:00`;
         const subObj = {
             clientId: this.state.clientId,
             job_date: dateTime,
