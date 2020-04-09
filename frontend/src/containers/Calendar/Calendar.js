@@ -63,11 +63,7 @@ class Calendar extends Component{
                 this.setState({error: err});
             })    
     }
-
-    componentDidMount(){
-        console.log('Calendar.js Mounted');
-    };
-
+    
     componentDidUpdate(prevProps, prevState){
        if(this.state.reloadJobs === true){
          //Axio get jobs 
@@ -80,8 +76,6 @@ class Calendar extends Component{
                         jobs: resp.data,
                         reloadJobs: false
                     });
-                    console.log('reloading Job')
-                    console.log(this.state.jobs)
                 })
                 .catch(err => {
                     this.setState({
