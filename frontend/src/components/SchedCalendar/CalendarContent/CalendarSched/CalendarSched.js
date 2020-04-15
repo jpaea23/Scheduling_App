@@ -9,8 +9,8 @@ const CalendarSched = (props) => {
   const boxRender = {};
   let condClass = '';
 
-  let startPos;
-  let endPos;
+  let startPos = TimeConst.START_POS;
+  let endPos = TimeConst.END_POS;
 
   let clientName = '';
   let clientNumber = '';
@@ -20,9 +20,9 @@ const CalendarSched = (props) => {
   if (typeof props.timeslot === 'object') {
     disabled = true;
     const key = Object.keys(props.timeslot);
-    startPos = (parseInt(key) - 7) * TimeConst.JOB_HEIGHT;
+    startPos += (parseInt(key) - 7) * TimeConst.JOB_HEIGHT;
     // TODO: Object duration value
-    endPos = startPos + (TimeConst.DEFAULT_DURATION * TimeConst.JOB_HEIGHT);
+    endPos += startPos + (TimeConst.DEFAULT_DURATION * TimeConst.JOB_HEIGHT);
     boxRender.height = endPos - startPos;
     boxRender.top = startPos;
     condClass = styles.Filled;
@@ -36,8 +36,8 @@ const CalendarSched = (props) => {
   } else if (props.timeslot === 11 || props.timeslot === 17) {
     boxRender.display = 'none';
   } else {
-    startPos = (props.timeslot - 7) * TimeConst.JOB_HEIGHT;
-    endPos = startPos + (1 * TimeConst.JOB_HEIGHT);
+    startPos += ((props.timeslot - 7) * TimeConst.JOB_HEIGHT);
+    endPos += startPos + (1 * TimeConst.JOB_HEIGHT);
     boxRender.height = endPos - startPos;
     boxRender.top = startPos;
     condClass = styles.Open;
