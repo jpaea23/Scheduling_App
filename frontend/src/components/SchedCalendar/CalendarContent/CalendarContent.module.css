@@ -9,10 +9,9 @@
 }
 
 .Content .Container {
-    padding: 0px;
     display: grid;
     background-color: lightgrey;
-    height: 600px;
+    height: 608.5px;
     margin: 10px 30px;
     border: thin solid black;
     grid-template-columns: 10% auto;
