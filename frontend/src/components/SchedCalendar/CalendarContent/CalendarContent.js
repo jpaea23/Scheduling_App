@@ -52,7 +52,12 @@ const CalendarContent = (props) => {
       return <CalendarSched
         key={time + i}
         timeslot={time}
-        clicked={props.toggler}/>;
+        clicked={props.toggler}
+        deleteClick={props.removeJobToggle}
+        showRemove={props.showRemove}
+        closeModal={props.closeRemove}
+        removeNow={props.removeJob}
+      />;
     });
   };
 
@@ -75,7 +80,7 @@ const CalendarContent = (props) => {
       <div className={styles.DateOfWeek}>
         {allJobs}
       </div>
-      <div style={{margin: '50px'}}>
+      <div style={{margin: '40px'}}>
         <p className={styles.SelectDate}>
           {dayjs(props.dateSelect).format('DD-MMM').toUpperCase()}
         </p>
@@ -103,6 +108,10 @@ CalendarContent.propTypes= {
   listOfClients: PropTypes.array,
   onAddJobSubmit: PropTypes.func,
   onCancelAddForm: PropTypes.func,
+  removeJobToggle: PropTypes.func,
+  showRemove: PropTypes.bool,
+  closeRemove: PropTypes.func,
+  removeJob: PropTypes.func,
 };
 
 export default CalendarContent;

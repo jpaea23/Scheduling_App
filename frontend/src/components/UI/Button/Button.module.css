@@ -1,0 +1,38 @@
+.Button {
+    color: rgba(0, 0, 0, 0.381);
+    font-weight: 900;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    margin-left: 8px;
+}
+
+.Button:hover {
+    color: white;
+    transition: all 0.2s;
+}
+
+.Button:hover .ToolTip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.ToolTip {
+    font-size: 14px;
+    position: absolute;
+    color: white;
+    width: auto;
+    padding: 1px 10px;
+    background-color: rgba(36, 32, 32, 0.794);
+    top: -12px;
+    right: 0;
+    margin-right: 8px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 2s;
+    border: thin solid blue
+}
