@@ -5,8 +5,7 @@ import styles from './Calendar.module.css'
 import axios from '../../config/Axios'
 import * as ApiConstant from '../../config/APIConst'
 import dayjs from 'dayjs';
-var utc = require('dayjs/plugin/utc')
-dayjs.extend(utc)
+import { JobContext } from '../../hoc/Context/JobContext';
 
 const days = [
     'Sunday',
@@ -34,7 +33,9 @@ class Calendar extends Component{
             address: "",
             description: "",
             clientId: "",
-            reloadJobs: false
+            reloadJobs: false,
+            showRemove: false,
+            jobSelected: []
         }
 
         //Axio get jobs 
@@ -93,10 +94,10 @@ class Calendar extends Component{
        }
     }
 
-    onCalChangeHandler = (date) => {
+    onCalChangeHandler = event => {
         let new_date = this.state.today
         let day_select = this.state.dateSelected;
-        if(date.target.id === 'Prev'){
+        if(event.target.id === 'Prev'){
             new_date = dayjs(new_date).subtract(7, 'day');
             day_select = new_date.endOf('week').format('YYYY-MM-DD');
         }else{
@@ -168,7 +169,7 @@ class Calendar extends Component{
         
         //Axios call
         axios
-            .post(ApiConstant.ADD_JOB,subObj)
+            .post(ApiConstant.JOB,subObj)
             .then(resp => {
                 this.setState({
                     toggleJobForm: false,
@@ -179,6 +180,36 @@ class Calendar extends Component{
         event.preventDefault();
     }
 
+    showDeleteModalHandler = (timeslot) => {
+        this.setState({
+            showRemove: true,
+            jobSelected: timeslot
+        });
+    }
+
+    removeDeleteModalHandler = () => {
+        this.setState({
+            showRemove: false,
+            jobSelected: {}
+        });
+    }
+
+    deleteJobHandler = (id) => {
+        axios
+            .delete(`${ApiConstant.JOB}${id}/`)
+            .then(resp => {
+                this.setState({
+                    reloadJobs: true,
+                    showRemove: false
+                });
+            })
+            .catch(resp => {
+                this.setState({
+                    showRemove: false
+                });
+            })
+    }
+
     render(){
         return(
             <div className={styles.Calendar}>
@@ -187,19 +218,25 @@ class Calendar extends Component{
                   month={dayjs(this.state.today).format('MMMM')} 
                   year={dayjs(this.state.today).format('YYYY')}
                 />
-                <CalendarContent 
-                  days={days}
-                  jobs={this.state.jobs}
-                  dateSelect={this.state.dateSelected}
-                  day_clicked={this.onDayChangeHandler}
-                  boolFormToggle={this.state.toggleJobForm}
-                  toggler={this.toggleAddFormHandler}
-                  timeSelect={this.state.timeSelected}
-                  listOfClients={this.state.client}
-                  jobFormOnChange={this.onAddJobValueChangeHandler}
-                  onAddJobSubmit={this.onAddjobSubmitHandler}
-                  onCancelAddForm={this.cancelAddFormHandler}
-                />
+                <JobContext.Provider value={{job: this.state.jobSelected}}>
+                    <CalendarContent 
+                      days={days}
+                      jobs={this.state.jobs}
+                      dateSelect={this.state.dateSelected}
+                      day_clicked={this.onDayChangeHandler}
+                      boolFormToggle={this.state.toggleJobForm}
+                      toggler={this.toggleAddFormHandler}
+                      timeSelect={this.state.timeSelected}
+                      listOfClients={this.state.client}
+                      jobFormOnChange={this.onAddJobValueChangeHandler}
+                      onAddJobSubmit={this.onAddjobSubmitHandler}
+                      onCancelAddForm={this.cancelAddFormHandler}
+                      removeJobToggle={this.showDeleteModalHandler}
+                      showRemove={this.state.showRemove}
+                      closeRemove={this.removeDeleteModalHandler}
+                      removeJob={this.deleteJobHandler}
+                    />
+                </JobContext.Provider> 
             </div>
         )
     }

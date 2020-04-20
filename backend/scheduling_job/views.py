@@ -22,6 +22,8 @@ class Jobs(generics.ListCreateAPIView):
     serializer_class = JobSerializer
 
 class JobDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (permissions.AllowAny,)
+    
     queryset = Job.objects.all()
     serializer_class = JobSerializer
 

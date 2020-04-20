@@ -11,11 +11,13 @@
 .Content .Container {
     display: grid;
     background-color: lightgrey;
-    height: 608.5px;
+    height: 900px;
     margin: 10px 30px;
-    border: thin solid black;
+    border: 2px solid black;
     grid-template-columns: 10% auto;
     position: relative;
+    padding: 10px;
+    border-radius: 20px;
 }
 
 .Content .SelectDate {

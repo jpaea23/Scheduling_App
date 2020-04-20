@@ -1,0 +1,27 @@
+.Container {
+    border: thin solid whitesmoke;
+    padding-bottom: 10px;
+    border-radius: 10px;
+}
+
+.Top {
+    position: relative;
+    height: 96px;
+    background-color: red;
+    margin-bottom: 10px;
+    font-size: 65px;
+    font-weight: 900;
+    transition: all 0.3s ease-in-out;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.Top span { 
+    border: 2px solid rgb(231, 227, 227);
+    background-color: white;
+    color: red;
+    text-align: center;
+    border-radius: 120px;
+    transition: all 0.3s ease-in-out;
+    padding: 6px 20px;
+}
