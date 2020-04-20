@@ -3,7 +3,7 @@ import styles from './Button.module.css';
 import PropTypes from 'prop-types';
 
 const Button = (props) => (
-  <div className="mt-2">
+  <div className="mt-2 mr-2">
     <span onClick={props.clicked} className={styles.Button}>
       <span className={styles.ToolTip}>
         {props.tip}
