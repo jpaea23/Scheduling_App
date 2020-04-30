@@ -6,16 +6,7 @@ import axios from '../../config/Axios'
 import * as ApiConstant from '../../config/APIConst'
 import dayjs from 'dayjs';
 import { JobContext } from '../../hoc/Context/JobContext';
-
-const days = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday'
-];
+import { calcAvailTimeSlot, days } from './Index'
 
 class Calendar extends Component{
     constructor(props) {
@@ -26,16 +17,20 @@ class Calendar extends Component{
             today: now,
             jobs: {},
             dateSelected: now,
-            timeSelected: null,
+            timeSelected: "",
             error: false,
-            toggleJobForm: false,
             client: [],
+            jobSelected: [],
+            timeslot: {},
+            availableTime: [],
             address: "",
             description: "",
             clientId: "",
             reloadJobs: false,
-            showRemove: false,
-            jobSelected: []
+            showModal: false,
+            showAddForm: false,
+            showDelete: false,
+            formName: "",
         }
 
         //Axio get jobs 
@@ -89,7 +84,7 @@ class Calendar extends Component{
                 });
        }
        
-       if(this.state.toggleJobForm === true){
+       if(this.state.showAddForm === true){
             window.scrollTo(0,document.body.scrollHeight)
        }
     }
@@ -124,30 +119,30 @@ class Calendar extends Component{
         this.setState({
             today: new_date.format('YYYY-MM-DD'),
             dateSelected: day_select,
-            toggleJobForm: false,
-            timeSelected: null
+            showAddForm: false,
+            timeSelected: ''
         });
     }
 
     onDayChangeHandler = (date) =>{
         this.setState({
             dateSelected:date,
-            timeSelected: null,
-            toggleJobForm: false,
+            timeSelected: '',
+            showAddForm: false,
         });
     }
 
     toggleAddFormHandler = (time) => {
         this.setState({
-            toggleJobForm: true,
+            showAddForm: true,
             timeSelected: time
         });
     }
 
     cancelAddFormHandler = () => {
         this.setState({
-            toggleJobForm: false,
-            timeSelected: null
+            showAddForm: false,
+            timeSelected: ''
         });
     }
 
@@ -172,7 +167,7 @@ class Calendar extends Component{
             .post(ApiConstant.JOB,subObj)
             .then(resp => {
                 this.setState({
-                    toggleJobForm: false,
+                    showAddForm: false,
                     reloadJobs: true
                 });
             })
@@ -182,15 +177,24 @@ class Calendar extends Component{
 
     showDeleteModalHandler = (timeslot) => {
         this.setState({
-            showRemove: true,
+            showModal: true,
+            showDelete: true,
             jobSelected: timeslot
         });
     }
 
-    removeDeleteModalHandler = () => {
+    removeModalHandler = () => {
         this.setState({
-            showRemove: false,
-            jobSelected: {}
+            showModal: false,
+            showDelete: false,
+            jobSelected: {},
+            timeslot: {},
+            availableTime: [],
+            clientId: "",
+            timeSelected: "",
+            address: "",
+            description: "",
+            formName: "",
         });
     }
 
@@ -200,17 +204,67 @@ class Calendar extends Component{
             .then(resp => {
                 this.setState({
                     reloadJobs: true,
-                    showRemove: false
+                    showModal: false,
+                    showDelete: false,
                 });
             })
             .catch(resp => {
                 this.setState({
-                    showRemove: false
+                    showModal: false,
+                    showDelete: false,
                 });
             })
     }
 
+    editModalHandler = (editDetails, formType) => {
+    	//set slot details
+    	const availableTimes = calcAvailTimeSlot(this.state.jobs, this.state.dateSelected);
+    	const clientId = editDetails['clientId'];
+    	const time = editDetails['time'];
+    	const address = editDetails['address'];
+    	const description = editDetails['description'];
+    	
+        this.setState({
+            showModal: true,
+            timeslot: editDetails,
+            availableTime: availableTimes,
+            clientId: clientId,
+            timeSelected: time,
+            address: address,
+            description: description,
+            formName: formType,
+        });
+    }
+
+    submitFormHandler = (jobId,event) => {
+        const type = this.state.formName;
+        if(type === 'edit'){
+            const dateTime = `${this.state.dateSelected} ${this.state.timeSelected}:00:00`;
+            const subObj = {
+                jobId: jobId,
+                clientId: this.state.clientId,
+                job_date: dateTime,
+                address: this.state.address,
+                status: false,
+                description: this.state.description
+            }
+            //Axios call
+            axios
+                .put(`${ApiConstant.JOB}${jobId}/`,subObj)
+                .then(resp => {
+                    this.setState({
+                        reloadJobs: true,
+                        showModal: false,
+                        formType: '',
+                    })
+                })
+                .catch(err => console.log(err))
+        }
+        event.preventDefault();
+    }
+
     render(){
+        const timeArr = calcAvailTimeSlot(this.state.jobs, this.state.dateSelected);
         return(
             <div className={styles.Calendar}>
                 <CalendarControls 
@@ -218,23 +272,33 @@ class Calendar extends Component{
                   month={dayjs(this.state.today).format('MMMM')} 
                   year={dayjs(this.state.today).format('YYYY')}
                 />
-                <JobContext.Provider value={{job: this.state.jobSelected}}>
+                <JobContext.Provider value={{
+                	job: this.state.jobSelected,
+                	timeslot: this.state.timeslot,
+                	clientList: this.state.client,
+                	dayTimeSlot: this.state.availableTime,
+                	date: this.state.dateSelected,
+                    formName: this.state.formName}}>
                     <CalendarContent 
                       days={days}
                       jobs={this.state.jobs}
                       dateSelect={this.state.dateSelected}
                       day_clicked={this.onDayChangeHandler}
-                      boolFormToggle={this.state.toggleJobForm}
-                      toggler={this.toggleAddFormHandler}
+                      boolFormToggle={this.state.showAddForm}
+                      addJob={this.toggleAddFormHandler}
+                      editJob={this.editModalHandler}
                       timeSelect={this.state.timeSelected}
                       listOfClients={this.state.client}
                       jobFormOnChange={this.onAddJobValueChangeHandler}
                       onAddJobSubmit={this.onAddjobSubmitHandler}
                       onCancelAddForm={this.cancelAddFormHandler}
                       removeJobToggle={this.showDeleteModalHandler}
-                      showRemove={this.state.showRemove}
-                      closeRemove={this.removeDeleteModalHandler}
+                      showModal={this.state.showModal}
+                      closeModal={this.removeModalHandler}
                       removeJob={this.deleteJobHandler}
+                      showDelete={this.state.showDelete}
+                      calcTime={timeArr}
+                      jobFormSubmit={this.submitFormHandler}
                     />
                 </JobContext.Provider> 
             </div>

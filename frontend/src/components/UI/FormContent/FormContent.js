@@ -1,56 +1,73 @@
 import React from 'react';
-import CalendarNewJobOpt from './CalendarNewJobOpt/CalendarNewJobOpt';
-import styles from './CalendarNewJob.module.css';
+import styles from './FormContent.module.css';
 import dayjs from 'dayjs';
+import {timeFormat, availableTimesArr, capitlize} from './Index';
+import CalendarNewJobOpt from '../../SchedCalendar/CalendarContent/CalendarNewJob/CalendarNewJobOpt/CalendarNewJobOpt';
 import PropTypes from 'prop-types';
 
-const CalendarNewJob = (props) => {
+const FormContent = (props) => {
+  const clientId = props.client['clientId'];
+  const jobId = props.jobDetails['jobId'];
   const optOfClients = props.clients.map((client) => {
-    return <CalendarNewJobOpt key={client.clientId}
+    return <CalendarNewJobOpt
+      key={client.clientId}
       name={client.name}
       phone={client.phone}
       id={client.clientId}/>;
   });
 
-  const timeOfDay = (props.time < 12 ) ? 'AM' : 'PM';
+  const timeNow = props.jobDetails['time'];
+  const address = props.jobDetails['address'];
+  const description = props.jobDetails['description'];
   const dateFormat = dayjs(props.date).format('DD-MM-YYYY');
-  const timeFormat = props.time + ':00 ' + timeOfDay;
+
+  const timeSlotsAvail = availableTimesArr(props.timeInDay, timeNow);
+
+  const listAvailTimes = timeSlotsAvail.map((time) => {
+    const newTime = timeFormat(time);
+    return <option key={time} value={time}>{newTime}</option>;
+  });
 
   return (
-    <div className={styles.AddJobForm}>
-      <form className="m-5 p-2" onSubmit={props.addNewJob}>
-        <div className="form-row mb-3">
+    <div className={styles.JobForm}>
+      <form className="p-3" onSubmit={(event) => props.submit(jobId, event)}>
+        <span className="text-center">
+          <h2>{capitlize(props.name)} Job</h2>
+        </span>
+        <div className="form-row">
           <div className="col-md-6">
             <label className="col-form-label">Client: </label>
             <select required
-              onChange={props.onChangeHandler}
               className="form-control"
+              onChange={props.onChangeHandler}
+              defaultValue={clientId}
               name="clientId">
-              <option></option>
               {optOfClients}
             </select>
           </div>
         </div>
-        <div className="form-row mb-3">
+        <div className="form-row">
           <div className="col-md-6">
             <label className="col-form-label">Date: </label>
             <input disabled
               type="text"
-              name="date"
+              name="time"
               className="form-control"
               value={dateFormat}/>
           </div>
           <div className="col-md-6">
             <label className="col-form-label">Time: </label>
-            <input disabled
-              type="text"
-              name="time"
+            <select required
               className="form-control"
-              value={timeFormat}/>
+              onChange={props.onChangeHandler}
+              name="timeSelected"
+              defaultValue={timeNow}>
+              {listAvailTimes}
+            </select>
           </div>
         </div>
-        <div className="form-row mb-3">
-          <div className="col-md-12">
+        <div className="form-row mb-2">
+          <div className="col-12">
             <label className="col-form-label">Address: </label>
             <input required
               maxLength="100"
@@ -58,29 +75,30 @@ const CalendarNewJob = (props) => {
               name="address"
               onChange={props.onChangeHandler}
               className="form-control"
-              placeholder="10 Sydney St Sydney 2000 ..."/>
+              defaultValue={address}/>
           </div>
         </div>
         <div className="form-row mb-3">
           <div className="col-md-12">
             <label className="col-form-label">Description: </label>
             <textarea required
+              style={{resize: 'none'}}
               maxLength="300"
               rows="3"
               type="text"
               name="description"
               onChange={props.onChangeHandler}
               className="form-control"
-              placeholder="Job Description..."/>
+              defaultValue={description}/>
           </div>
         </div>
         <div className="submit-row d-flex mb-3">
           <input
             className="btn btn-primary mr-2"
             type="submit"
-            value="Add" />
+            value="Update" />
           <input
-            onClick={props.cancelClick}
+            onClick={props.cancel}
             className="btn btn-primary"
             type="button"
             value="Cancel" />
@@ -90,13 +108,17 @@ const CalendarNewJob = (props) => {
   );
 };
 
-CalendarNewJob.propTypes= {
+FormContent.propTypes= {
   clients: PropTypes.array,
-  time: PropTypes.string,
-  date: PropTypes.string,
-  addNewJob: PropTypes.func,
+  client: PropTypes.object,
+  jobDetails: PropTypes.object,
   onChangeHandler: PropTypes.func,
-  cancelClick: PropTypes.func,
+  submit: PropTypes.func,
+  cancel: PropTypes.func,
+  date: PropTypes.string,
+  timeInDay: PropTypes.array,
+  name: PropTypes.string,
 };
 
-export default CalendarNewJob;
+
+export default FormContent;
