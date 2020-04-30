@@ -95,6 +95,7 @@ const CalendarSched = (props) => {
                 timeInDay={jobDet['dayTimeSlot']}
                 onChangeHandler={props.formChange}
                 cancel={props.closeModal}
+                delete={() => props.deleteClick(deleteDetails)}
                 name={jobDet['formName']}
                 submit={props.formSubmit}
               />

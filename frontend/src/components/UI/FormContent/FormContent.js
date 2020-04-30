@@ -97,6 +97,11 @@ const FormContent = (props) => {
             className="btn btn-primary mr-2"
             type="submit"
             value="Update" />
+            <input
+            onClick={props.delete}
+            className="btn btn-danger mr-2"
+            type="button"
+            value="Delete" />
           <input
             onClick={props.cancel}
             className="btn btn-primary"
