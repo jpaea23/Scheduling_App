@@ -1,12 +1,11 @@
 .JobForm {
 	background-color: rgb(252, 252, 252);
-    border-radius: 15px;
-    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.35);
-    border: 5px solid #305A72;
+	border-radius: 15px;
+	box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.35);
+	border: 5px solid #305A72;
 }
 
 .JobForm label{
 	font-weight: bold;
-    text-shadow: 1px 1px 1px #FFF;
+	text-shadow: 1px 1px 1px #FFF;
 }
-

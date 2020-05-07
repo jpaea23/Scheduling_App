@@ -1,13 +1,17 @@
 export const timeFormat = (time) => {
-  const timeOfDay = (time < 12 ) ? 'AM' : 'PM';
-  const timeNow = (time > 12 ) ? time - 12 : time;
-  time = `${timeNow}:00 ${timeOfDay}`;
-  return time;
+  let result =  `12:00 AM`;
+  if (time > 0) {
+    const timeOfDay = (time < 12 ) ? 'AM' : 'PM';
+    const timeNow = (time > 12 ) ? time - 12 : time;
+    result = `${timeNow}:00 ${timeOfDay}`;
+  }
+  return result;
 };
 
 export const availableTimesArr = (arr, timeNow) => {
-  if (arr.length === 0 ) {
-    return arr;
+  //return given array if params not satisfied.
+  if (arr.length === 0 || typeof timeNow !== 'string') {
+    return 0;
   }
   for (let i = 0; i < arr.length; i++) {
     if (typeof arr[i] === 'object' || arr[i] === 11 ||

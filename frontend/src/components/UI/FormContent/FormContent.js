@@ -22,11 +22,14 @@ const FormContent = (props) => {
   const dateFormat = dayjs(props.date).format('DD-MM-YYYY');
 
   const timeSlotsAvail = availableTimesArr(props.timeInDay, timeNow);
+  let listAvailTimes = (<option></option>);
 
-  const listAvailTimes = timeSlotsAvail.map((time) => {
-    const newTime = timeFormat(time);
-    return <option key={time} value={time}>{newTime}</option>;
-  });
+  if (timeSlotsAvail) {
+    listAvailTimes = timeSlotsAvail.map((time) => {
+      const newTime = timeFormat(time);
+      return <option key={time} value={time}>{newTime}</option>;
+    });
+  }
 
   return (
     <div className={styles.JobForm}>
@@ -97,7 +100,7 @@ const FormContent = (props) => {
             className="btn btn-primary mr-2"
             type="submit"
             value="Update" />
-            <input
+          <input
             onClick={props.delete}
             className="btn btn-danger mr-2"
             type="button"
@@ -123,6 +126,7 @@ FormContent.propTypes= {
   date: PropTypes.string,
   timeInDay: PropTypes.array,
   name: PropTypes.string,
+  delete: PropTypes.func,
 };
 
 

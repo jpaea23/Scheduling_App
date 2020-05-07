@@ -50,7 +50,6 @@ const CalendarSched = (props) => {
       {'Number': clientNumber},
       {'Address': jobAddress},
     ];
-
     editDetails = {
       'jobId': jobId,
       'clientId': client['clientId'],
@@ -74,7 +73,7 @@ const CalendarSched = (props) => {
   return (
     <Aux>
       {
-        (props.showModal) ? (
+        (props.showModal && disabled) ? (
         <Modal
           form={!props.showDeleteModal}
           show={props.showModal}
