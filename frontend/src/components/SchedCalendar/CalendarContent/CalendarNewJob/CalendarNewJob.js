@@ -92,7 +92,7 @@ const CalendarNewJob = (props) => {
 
 CalendarNewJob.propTypes= {
   clients: PropTypes.array,
-  time: PropTypes.number,
+  time: PropTypes.string,
   date: PropTypes.string,
   addNewJob: PropTypes.func,
   onChangeHandler: PropTypes.func,

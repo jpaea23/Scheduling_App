@@ -12,6 +12,7 @@ const Modal = (props) => {
         style={{
           transform: props.show ? 'translateY(0)' : 'translatey(-100vh)',
           opacity: props.show ? '1' : '0',
+          top: props.form ? '5%' : '25%',
         }}>
         {props.children}
       </div>
@@ -23,6 +24,7 @@ Modal.propTypes= {
   show: PropTypes.bool,
   children: PropTypes.any,
   click: PropTypes.func,
+  form: PropTypes.bool,
 };
 
 export default Modal;

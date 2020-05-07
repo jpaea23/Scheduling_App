@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Button from '../../../UI/Button/Button';
 import Modal from '../../../UI/Modal/Modal';
 import ModalContent from '../../../UI/ModalContent/ModalContent';
+import FormContent from '../../../UI/FormContent/FormContent';
 import {JobContext} from '../../../../hoc/Context/JobContext';
 
 const CalendarSched = (props) => {
@@ -16,13 +17,15 @@ const CalendarSched = (props) => {
   let startPos = TimeConst.START_POS;
   let endPos = TimeConst.END_POS;
 
+  let client = {};
   let clientName = '';
   let clientNumber = '';
   let jobAddress = '';
   let jobDescription = '';
   let jobId = '';
   let key = '';
-  let arrDetails = [];
+  let deleteDetails = [];
+  let editDetails = {};
 
   if (typeof props.timeslot === 'object') {
     disabled = true;
@@ -35,14 +38,25 @@ const CalendarSched = (props) => {
     condClass = styles.Filled;
 
     const job = props.timeslot[key];
-    const client = job['client'];
+    client = job['client'];
     clientName = client['name'];
     clientNumber = client['phone'];
     jobAddress = job['address'];
     jobDescription = job['description'];
     jobId = job['jobId'];
-    arrDetails = [{'Id': jobId}, {'Name': clientName}, {'Number': clientNumber},
-      {'Address': jobAddress}];
+    deleteDetails = [
+      {'Id': jobId},
+      {'Name': clientName},
+      {'Number': clientNumber},
+      {'Address': jobAddress},
+    ];
+    editDetails = {
+      'jobId': jobId,
+      'clientId': client['clientId'],
+      'time': key + '',
+      'address': jobAddress,
+      'description': jobDescription,
+    };
   } else if (props.timeslot === 11 || props.timeslot === 17) {
     boxRender.display = 'none';
   } else {
@@ -59,20 +73,40 @@ const CalendarSched = (props) => {
   return (
     <Aux>
       {
-        (props.showRemove) ? (
-        <Modal show={props.showRemove} click={props.closeModal}>
-          <ModalContent
-            cancel={props.closeModal}
-            remove={props.removeNow}
-            heading={heading}
-            message={message}
-            details={jobDet['job']}/>
-        </Modal> ) : null
+        (props.showModal && disabled) ? (
+        <Modal
+          form={!props.showDeleteModal}
+          show={props.showModal}
+          click={props.closeModal}>
+          {
+            (props.showDeleteModal) ? (
+              <ModalContent
+                cancel={props.closeModal}
+                remove={props.removeNow}
+                heading={heading}
+                message={message}
+                details={jobDet['job']}/> ) :
+              <FormContent
+                client={client}
+                clients={jobDet['clientList']}
+                jobDetails={jobDet['timeslot']}
+                date={jobDet['date']}
+                timeInDay={jobDet['dayTimeSlot']}
+                onChangeHandler={props.formChange}
+                cancel={props.closeModal}
+                delete={() => props.deleteClick(deleteDetails)}
+                name={jobDet['formName']}
+                submit={props.formSubmit}
+              />
+          }
+        </Modal>) : null
       }
       <button
-        onClick={() => props.clicked(props.timeslot)}
+        onClick={() => {
+          (disabled) ? props.clickedEdit(editDetails, 'edit') :
+            props.clickedAdd(props.timeslot.toString());
+        }}
         className={[styles.Timeslot, condClass].join(' ')}
-        disabled={disabled}
         style={boxRender}>
         <div className={!disabled ? styles.Animation : styles.NoAnimation}>
           <p>Make Booking</p>
@@ -116,7 +150,7 @@ const CalendarSched = (props) => {
               <div className="col p-0">
                 <div className="row d-flex flex-row-reverse">
                   <Button
-                    clicked={() => props.deleteClick(arrDetails)}
+                    clicked={() => props.deleteClick(deleteDetails)}
                     tip='Delete'
                     name='X'
                   />
@@ -133,10 +167,15 @@ const CalendarSched = (props) => {
 CalendarSched.propTypes= {
   timeslot: PropTypes.any,
   clicked: PropTypes.func,
-  showRemove: PropTypes.bool,
+  showModal: PropTypes.bool,
   closeModal: PropTypes.func,
   removeNow: PropTypes.func,
   deleteClick: PropTypes.func,
+  showDeleteModal: PropTypes.bool,
+  formChange: PropTypes.func,
+  formSubmit: PropTypes.func,
+  clickedAdd: PropTypes.func,
+  clickedEdit: PropTypes.func,
 };
 
 export default CalendarSched;
