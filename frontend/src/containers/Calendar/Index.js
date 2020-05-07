@@ -6,7 +6,7 @@ export const calcAvailTimeSlot = (jobs, dateSelected) => {
   let start = 7;
 
   while (start < 18) {
-    if (start in jobs[dateSelected]) {
+    if (jobs[dateSelected] !== undefined && start in jobs[dateSelected]) {
       const jobTime = start+'';
       timeslot.push({[jobTime]: jobs[dateSelected][jobTime]});
       start += duration;
