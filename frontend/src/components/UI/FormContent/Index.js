@@ -1,9 +1,9 @@
 export const timeFormat = (time) => {
-  let result =  `12:00 AM`;
+  let result =  `12 AM`;
   if (time > 0) {
     const timeOfDay = (time < 12 ) ? 'AM' : 'PM';
     const timeNow = (time > 12 ) ? time - 12 : time;
-    result = `${timeNow}:00 ${timeOfDay}`;
+    result = `${timeNow} ${timeOfDay}`;
   }
   return result;
 };
