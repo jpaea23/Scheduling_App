@@ -73,7 +73,7 @@ const CalendarContent = (props) => {
       <div className={styles.DateOfWeek}>
         {allJobs}
       </div>
-      <div style={{margin: '40px'}}>
+      <div className={styles.CalWrapper}>
         <p className={styles.SelectDate}>
           {dayjs(props.dateSelect).format('DD-MMM').toUpperCase()}
         </p>

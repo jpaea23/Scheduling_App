@@ -1,0 +1,22 @@
+.Time {
+	height: 100%;
+	width: 11%;
+}
+
+.Time p {
+    background-color: rgb(255, 255, 199);
+	padding-top: 4px;
+    height: 120%;
+}
+
+@media(max-width:700px) {
+    .Time {
+        width: 16%;
+    }
+}
+
+@media(max-width:440px) {
+    .Time {
+        width: 20%;
+    }
+}
