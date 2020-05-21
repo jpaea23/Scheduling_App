@@ -41,15 +41,15 @@ test('timeEdgeCase', () => {
 });
 
 test('timeSlotArrayCorrectParam', () => {
-	const timeSlotArray = [7, 8, {'9': 'test'}, 10, 11, 12, {'13': 'test2'}, 14, 15, 16, 17];
-  expect(availableTimesArr(timeSlotArray,timeNowStr)).toEqual([7,8,9,10,12,14,15,16]);
+  const timeSlotArray = [7, 8, {'9': 'test'}, 10, 11, 12, {'13': 'test2'}, 14, 15, 16, 17];
+  expect(availableTimesArr(timeSlotArray, timeNowStr)).toEqual([7, 8, 9, 10, 12, 14, 15, 16]);
   expect(timeSlotArray).toContain(9);
-  expect(timeSlotArray).toHaveLength(8)
+  expect(timeSlotArray).toHaveLength(8);
 });
 
 test('timeSlotArrayParamError', () => {
-	//default to 0
-	//return false to prevent any selections of timeslots - Prevent overlapping
-	const timeSlotArray = [7, 8, {'9': 'test'}, 10, 11, 12, {'13': 'test2'}, 14, 15, 16, 17];
-	expect(availableTimesArr(timeSlotArray,timeNowNum)).toEqual(0);
-})
+  // default to 0
+  // return false to prevent any selections of timeslots - Prevent overlapping
+  const timeSlotArray = [7, 8, {'9': 'test'}, 10, 11, 12, {'13': 'test2'}, 14, 15, 16, 17];
+  expect(availableTimesArr(timeSlotArray, timeNowNum)).toEqual(0);
+});

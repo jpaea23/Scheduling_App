@@ -56,6 +56,7 @@ const CalendarSched = (props) => {
       'time': key + '',
       'address': jobAddress,
       'description': jobDescription,
+      'deleteDetails': deleteDetails,
     };
   } else if (props.timeslot === 11 || props.timeslot === 17) {
     boxRender.display = 'none';
@@ -87,14 +88,15 @@ const CalendarSched = (props) => {
                 message={message}
                 details={jobDet['job']}/> ) :
               <FormContent
-                client={client}
                 clients={jobDet['clientList']}
                 jobDetails={jobDet['timeslot']}
                 date={jobDet['date']}
                 timeInDay={jobDet['dayTimeSlot']}
                 onChangeHandler={props.formChange}
                 cancel={props.closeModal}
-                delete={() => props.deleteClick(deleteDetails)}
+                delete={() => props.deleteClick(
+                    jobDet['timeslot']['deleteDetails'],
+                )}
                 name={jobDet['formName']}
                 submit={props.formSubmit}
               />
@@ -113,51 +115,49 @@ const CalendarSched = (props) => {
         </div>
         {
           (disabled) ? (
-          <div className="container h-100">
-            <div className="container row p-0 m-0">
-              <div className="text-left col-8 col-sm-10 col-lg-11 pt-4 pl-2">
-                <div className="row">
-                  <div className="col-12 col-md-6">
-                    <span className={styles.Label}>
-                      Name:
-                    </span>
-                    {clientName}
-                  </div>
-                  <div className="col">
-                    <span className={styles.Label}>
-                      Phone:
-                    </span>
-                    {clientNumber}
-                  </div>
+          <div className="row h-100 p-0 mx-2">
+            <div className="text-left col-8 col-sm-10 col-lg-11 pt-4 pl-2">
+              <div className="row">
+                <div className="col-12 col-md-6">
+                  <span className={styles.Label}>
+                    Name:
+                  </span>
+                  {clientName}
                 </div>
-                <div className="row">
-                  <div className="col">
-                    <span className={styles.Label}>
-                      Address:
-                    </span>
-                    {jobAddress}
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col">
-                    <span className={styles.Label}>
-                      Description:
-                    </span>
-                    {jobDescription}
-                  </div>
+                <div className="col">
+                  <span className={styles.Label}>
+                    Phone:
+                  </span>
+                  {clientNumber}
                 </div>
               </div>
-              <div className="col p-0">
-                <div className="row d-flex flex-row-reverse">
-                  <Button
-                    clicked={() => props.deleteClick(deleteDetails)}
-                    tip='Delete'
-                    name='X'
-                  />
+              <div className="row">
+                <div className="col">
+                  <span className={styles.Label}>
+                    Address:
+                  </span>
+                  {jobAddress}
+                </div>
+              </div>
+              <div className="row">
+                <div className="col">
+                  <span className={styles.Label}>
+                    Description:
+                  </span>
+                  {jobDescription}
                 </div>
               </div>
             </div>
-          </div> ) : null
+            <div className="col p-0">
+              <div className="row d-flex flex-row-reverse">
+                <Button
+                  clicked={() => props.deleteClick(deleteDetails)}
+                  tip='Delete'
+                  name='X'
+                />
+              </div>
+            </div>
+          </div>) : null
         }
       </button>
     </Aux>

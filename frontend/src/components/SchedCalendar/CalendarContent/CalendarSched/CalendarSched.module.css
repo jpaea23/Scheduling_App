@@ -1,8 +1,9 @@
 .Timeslot {
     position: absolute;
-    left: 13%;
+    left: 15%;
     color: white;
-    width: 84%;
+    width: 80%;
+    max-width: 100%;
     z-index: 1;
     border-radius: 12px;
     text-align: left;
@@ -11,6 +12,7 @@
 .Filled {
     background-color: rgba(233, 84, 47, 0.88);
     overflow: hidden;
+    
 }
 
 .Open {
@@ -77,5 +79,19 @@
 @media(max-width:530px) {
     .Label {
         display: none;
+    }
+}
+
+@media(max-width:715px) {
+    .Timeslot {
+        left: 18%;
+        width: 76%;
+    }
+}
+
+@media(max-width:530px) {
+    .Timeslot {
+        left: 23%;
+        width: 71%;
     }
 }

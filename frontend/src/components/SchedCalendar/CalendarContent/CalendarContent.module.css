@@ -8,13 +8,15 @@
     box-sizing: border-box;
 }
 
+.Content .CalWrapper {
+    margin: 50px;
+}
+
 .Content .Container {
-    display: grid;
     background-color: lightgrey;
-    height: 900px;
+    height: 920px;
     margin: 10px 30px;
     border: 2px solid black;
-    grid-template-columns: 10% auto;
     position: relative;
     padding: 10px;
     border-radius: 20px;
@@ -33,4 +35,10 @@
     border-radius: 30px;
     box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
     border: 6px solid #305A72;
+}
+
+@media(max-width:530px) {
+   .Content .CalWrapper {
+        margin: 10px;
+    }
 }

@@ -1,17 +1,15 @@
 import React from 'react';
-import Aux from '../../../../hoc/Aux/Aux';
+import Time from './Time/Time';
+import Slot from './Slot/Slot';
 import styles from './CalendarTimeslot.module.css';
-import PropTypes from 'prop-types';
 import {timeFormat} from '../../../UI/FormContent/Index';
+import PropTypes from 'prop-types';
 
 const CalendarTimeslot = (props) => (
-  <Aux>
-    <div className={styles.JobTimeSlot}>
-      <p>{timeFormat(props.time)}</p>
-    </div>
-    <div className={styles.JobSched}>
-    </div>
-  </Aux>
+  <div className={styles.Timeslot}>
+    <Time time={timeFormat(props.time)}/>
+    <Slot/>
+  </div>
 );
 
 CalendarTimeslot.propTypes= {

@@ -6,7 +6,7 @@ import CalendarNewJobOpt from '../../SchedCalendar/CalendarContent/CalendarNewJo
 import PropTypes from 'prop-types';
 
 const FormContent = (props) => {
-  const clientId = props.client['clientId'];
+  const clientId = props.jobDetails['clientId'];
   const jobId = props.jobDetails['jobId'];
   const optOfClients = props.clients.map((client) => {
     return <CalendarNewJobOpt

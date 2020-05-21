@@ -1,5 +1,5 @@
 export const timeFormat = (time) => {
-  let result =  `12 AM`;
+  let result = `12 AM`;
   if (time > 0) {
     const timeOfDay = (time < 12 ) ? 'AM' : 'PM';
     const timeNow = (time > 12 ) ? time - 12 : time;
@@ -9,7 +9,7 @@ export const timeFormat = (time) => {
 };
 
 export const availableTimesArr = (arr, timeNow) => {
-  //return given array if params not satisfied.
+  // return given array if params not satisfied.
   if (arr.length === 0 || typeof timeNow !== 'string') {
     return 0;
   }

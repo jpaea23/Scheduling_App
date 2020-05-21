@@ -1,0 +1,24 @@
+.Wrapper {
+    background-color: rgba(255, 255, 240);
+	width: 91%;
+}
+
+.Slot {
+	margin-top: 16px;
+	border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    background-color: rgba(255, 255, 240);
+    height: 100%;
+}
+
+@media(max-width:700px) {
+    .Wrapper {
+        width: 84%;
+    }
+}
+
+@media(max-width:440px) {
+    .Wrapper {
+        width: 80%;
+    }
+}
