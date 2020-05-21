@@ -1,5 +1,11 @@
 .Timeslot {
    height: 79.7px;
    display: flex;
-   text-align: center;
+   text-align: right;
+}
+
+@media(max-width: 850px) {
+	.Timeslot {
+		text-align: center;
+	}
 }
